@@ -8,7 +8,6 @@ def two_sum():
         compliments[2020-line] = 0
 
 
-
 def three_sum():
     nums = []
     file = open("input.txt", "r")
