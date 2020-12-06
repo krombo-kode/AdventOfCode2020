@@ -12,6 +12,7 @@ def ticket_splitter(ticket):
     temp["column"] = ticket[-3:]
     return temp
 
+
 def row_translator(row):
     lower = 0
     upper = 127
@@ -23,6 +24,7 @@ def row_translator(row):
             lower = mid + 1
     return int(lower)
 
+
 def column_translator(column):
     lower = 0
     upper = 7
@@ -33,6 +35,7 @@ def column_translator(column):
         else:
             lower = mid + 1
     return int(lower)
+
 
 def seat_id_generator(ticket):
     return ticket["row"] * 8 + ticket["column"]
@@ -49,6 +52,7 @@ def main_function(input_file):
         boarding_passes.append(ticket)
     return boarding_passes
 
+
 def highest_seat_id(boarding_passes):
     highest_id = 0
     for boarding_pass in boarding_passes:
@@ -56,4 +60,20 @@ def highest_seat_id(boarding_passes):
             highest_id = boarding_pass["seat_id"]
     return highest_id
 
+
+def seat_locator(boarding_passes):
+    seat_map = []
+    for i in range(0, 127):
+        seat_map.append([])
+    for boarding_pass in boarding_passes:
+        seat_map[boarding_pass["row"]].append(boarding_pass["seat_id"])
+    for row in seat_map:
+        if len(row) == 7:
+            seat_row = sorted(row)
+    for i in range(0, 6):
+        if seat_row[i+1] - seat_row[i] != 1:
+            return seat_row[i]+1
+
+
 print(highest_seat_id(main_function("input.txt")))
+print(seat_locator(main_function("input.txt")))
