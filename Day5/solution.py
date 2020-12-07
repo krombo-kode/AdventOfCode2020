@@ -13,24 +13,15 @@ def ticket_splitter(ticket):
     return temp
 
 
-def row_translator(row):
+def ticket_translator(segment, segment_type):
     lower = 0
-    upper = 127
-    for direction in row:
+    if segment_type == "R":
+        upper = 127
+    elif segment_type == "C":
+        upper = 7
+    for direction in segment:
         mid = (upper - lower) // 2 + lower
-        if direction == "F":
-            upper = mid
-        else:
-            lower = mid + 1
-    return int(lower)
-
-
-def column_translator(column):
-    lower = 0
-    upper = 7
-    for direction in column:
-        mid = (upper - lower) // 2 + lower
-        if direction == "L":
+        if direction == "L" or direction == "F":
             upper = mid
         else:
             lower = mid + 1
@@ -46,8 +37,8 @@ def main_function(input_file):
     ticket_list = ticket_list_maker(input_file)
     for ticket in ticket_list:
         ticket = ticket_splitter(ticket)
-        ticket["row"] = row_translator(ticket["row"])
-        ticket["column"] = column_translator(ticket["column"])
+        ticket["row"] = ticket_translator(ticket["row"], "R")
+        ticket["column"] = ticket_translator(ticket["column"], "C")
         ticket["seat_id"] = seat_id_generator(ticket)
         boarding_passes.append(ticket)
     return boarding_passes
