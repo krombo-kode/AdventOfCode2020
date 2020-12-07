@@ -15,16 +15,28 @@ def answer_list_maker(input_file):
     return groups_answers
 
 
-def yes_counter(group):
+def any_yes_counter(group):
     result = len(set("".join(group)))
     return result
 
 
-def yes_sum_finder(groups):
+def all_yes_counter(group):
+    count = 0
+    answers = "".join(group)
+    checks = set(answers)
+    for check in checks:
+        if answers.count(check) == len(group):
+            count +=1
+    return count
+
+
+
+def yes_sum_finder(groups,func):
     total = 0
     for group in groups:
-        total += yes_counter(group)
+        total += func(group)
     return total
 
 
-print(yes_sum_finder(answer_list_maker("input.txt")))
+print(yes_sum_finder(answer_list_maker("input.txt"),any_yes_counter))
+print(yes_sum_finder(answer_list_maker("input.txt"),all_yes_counter))
